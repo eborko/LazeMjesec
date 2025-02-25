@@ -1,0 +1,6 @@
+@LazeMjesec.Server_HostAddress = http://localhost:5183
+
+GET {{LazeMjesec.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
