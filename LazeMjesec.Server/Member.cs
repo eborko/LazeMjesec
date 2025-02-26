@@ -4,7 +4,24 @@ namespace LazeMjesec.Server
 {
     public class Member
     {
-        public string Name { get; set; }
+        private string _name;
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (value == string.Empty)
+                {
+                    throw new ArgumentException("Name cannot be empty");
+                }
+
+                _name = value;
+            }
+        }
 
         private string _email;
         public string Email 
@@ -15,8 +32,7 @@ namespace LazeMjesec.Server
             }
             set
             {
-                string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-                Regex emailRegex = new Regex(emailPattern);
+                Regex emailRegex = new Regex(RegexHolder.EmailPattern);
                 if (!emailRegex.IsMatch(value))
                 {
                     throw new ArgumentException($"Invalid email address: {value}");
@@ -26,5 +42,9 @@ namespace LazeMjesec.Server
             }
         }
         public string? PhoneNumber { get; set; }
+
+        public Member()
+        {
+        }
     }
 }

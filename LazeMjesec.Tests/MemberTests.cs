@@ -19,8 +19,7 @@ public class MemberTests
     [TestCase("John @Doe")]
     public void Set_Invalid_Email_ThrowsException(string mail)
     {
-        string emailRegex = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        bool result = Regex.IsMatch(mail, emailRegex);
+        bool result = Regex.IsMatch(mail, RegexHolder.EmailPattern);
 
         Assert.IsFalse(result);
 
@@ -31,13 +30,27 @@ public class MemberTests
     [TestCase("borko@admonte.net")]
     public void Set_Valid_Email_UpdatesEmail(string mail)
     {
-        string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        Regex emailRegex = new Regex(emailPattern);
+        Regex emailRegex = new Regex(RegexHolder.EmailPattern);
         bool result = emailRegex.IsMatch(mail);
 
         Assert.IsTrue(result);
 
         _member.Email = mail;
         Assert.That(_member.Email, Is.SameAs(mail));
+    }
+
+    [Test]
+    [TestCase("")]
+    public void Set_Empty_Name_ThrowsException(string name)
+    {
+        Assert.Throws<ArgumentException>(() => _member.Name = name);
+    }
+
+    [Test]
+    [TestCase("John")]
+    public void Set_Valid_Name_UpdatesName(string name)
+    {
+        _member.Name = name;
+        Assert.That(_member.Name.Equals(name));
     }
 }
